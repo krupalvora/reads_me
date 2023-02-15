@@ -1,0 +1,20 @@
+{% extends "reads_me/base.html" %}
+{% block content %}
+    <style>
+        .cover-container {
+            max-width: 42em;
+        }
+    </style>
+
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <main class="px-3">
+            <div class="display-1"><i class="bi bi-bookmark-heart"></i> reads_me</div>
+            <p class="lead">
+                A simple, private video bookmark page for all of those videos you'd like to watch <i>later</i>.
+            </p>
+            <p class="lead">
+                <a href="{% url 'register' %}" class="btn btn-lg btn-primary fw-bold border-white">Get Started</a>
+            </p>
+        </main>
+    </div>
+{% endblock content %}

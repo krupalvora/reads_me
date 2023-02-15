@@ -1,0 +1,9 @@
+.DS_Store
+.idea/
+db.sqlite3
+media
+*__pycache__*
+debug.log
+env
+/static
+*/migrations
