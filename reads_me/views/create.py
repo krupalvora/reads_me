@@ -1,4 +1,5 @@
 import datetime
+import random
 import re
 
 from django.contrib import messages
@@ -39,6 +40,8 @@ def create(request):
             article_title = get_buzzfeed_title(wikipedia_title)
             # removing the quotes
             article_title = article_title.replace('"', '')
+            # making sure the number of items in the listicle isn't huge
+            article_title = replace_num(article_title)
             print(article_title)
             print("---------------------------------------------")
             if len(article_title) == 0:
@@ -80,3 +83,27 @@ def create_url_slug(input_str):
     # Replace repeated underscores with a single underscore
     slug = re.sub(r'_+', '_', slug)
     return slug.lower()
+
+
+def replace_num(string):
+    """
+     checks if a string starts with an integer and if that integer is greater than 10,
+    it replaces it with a randomly chosen number from 5, 7, and 10, accounting for the
+    fact that the number may be several digits long
+    :param string:
+    :return:
+    """
+    # find the length of the integer at the beginning of the string
+    num_len = 0
+    for char in string:
+        if char.isdigit():
+            num_len += 1
+        else:
+            break
+    # check if the integer is greater than 10
+    if num_len > 0:
+        num = int(string[:num_len])
+        if num > 10:
+            new_num = random.choice([5, 7, 10])
+            return str(new_num) + string[num_len:]
+    return string
