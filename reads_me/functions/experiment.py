@@ -30,10 +30,7 @@ print(is_first_revision_in_past_month(article_id))
 # I need some space right now and won't be able to hang out for a while, but I look forward to
 # catching up with you in the future.
 
-# I hope you understand that I don't want to see you for the time being. It's nothing personal,
-# it's just that I need some time and space right now. Please don't take it negatively. I
-# definitely look forward to seeing you
 
-# Hey Maqui, I'm sorry to hear about your neighbor.  That's very sad and I'm sure is difficult.  I'm going through
+# Hey Maqui, I'm sorry to hear about your neighbor.  That's very sad, and I'm sure is difficult.  I'm going through
 # a bit of a difficult period also.  I hope you understand that I don't feel like hanging out for the time being.
 # Please don't take it negatively.

@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from django.utils import timezone
 from openai.error import RateLimitError
 
-from reads_me.constants import DEATHS
+from reads_me.constants import DEATHS, CATEGORIES, INTERESTING
 from reads_me.functions.ai import get_buzzfeed_title, get_buzzfeed_article, get_category, get_the_onion_title, \
     get_the_onion_article, get_buzzfeed_deceased_title
 from reads_me.functions.wikipedia import get_popular, get_wikipedia_image_url, get_wikipedia_title, is_person_dead, \
@@ -77,7 +77,8 @@ def create(request):
                         category = DEATHS
                     else:
                         category = get_category(wikipedia_title)
-                    print(category)
+                        if category not in CATEGORIES:
+                            category = INTERESTING
 
                     # saving the post
                     post = Post(
