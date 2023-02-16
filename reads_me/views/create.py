@@ -7,9 +7,10 @@ from django.shortcuts import redirect
 from django.utils import timezone
 from openai.error import RateLimitError
 
+from reads_me.constants import DEATHS
 from reads_me.functions.ai import get_buzzfeed_title, get_buzzfeed_article, get_category, get_the_onion_title, \
-    get_the_onion_article
-from reads_me.functions.wikipedia import get_popular, get_wikipedia_image_url, get_wikipedia_title
+    get_the_onion_article, get_buzzfeed_deceased_title
+from reads_me.functions.wikipedia import get_popular, get_wikipedia_image_url, get_wikipedia_title, is_person_dead
 from reads_me.models import Post
 
 
@@ -31,15 +32,26 @@ def create(request):
     for article_id in popular_articles:
         if article_count >= article_limit:
             break
+
         # check if this is new content
         if Post.objects.filter(wikipedia_id=article_id, date_popular=popular_date).exists():
             continue
+            
         # getting the (more) human-readable title
+        # e.g. "Raquel_Welch" -> "Raquel Welch"
+        wikipedia_title = get_wikipedia_title(article_id)
+
         try:
-            wikipedia_title = get_wikipedia_title(article_id)
-            article_title = get_buzzfeed_title(wikipedia_title)
+            # Using past tense if person has died
+            deceased_date = is_person_dead(article_id)
+            if deceased_date is not None:
+                article_title = get_buzzfeed_deceased_title(wikipedia_title)
+            else:
+                article_title = get_buzzfeed_title(wikipedia_title)
+
             # removing the quotes
-            article_title = article_title.replace('"', '')
+            article_title = article_title.replace('"', '').strip()
+            print(f"'{article_title}'")
             # making sure the number of items in the listicle isn't huge
             article_title = replace_num(article_title)
             print(article_title)
@@ -56,7 +68,10 @@ def create(request):
                     image_url = get_wikipedia_image_url(article_id)
                     print(image_url)
                     print("---------------------------------------------")
-                    category = get_category(wikipedia_title)
+                    if deceased_date is not None:
+                        category = DEATHS
+                    else:
+                        category = get_category(wikipedia_title)
                     print(category)
                     post = Post(
                         date_popular=popular_date,

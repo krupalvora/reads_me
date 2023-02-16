@@ -113,3 +113,45 @@ def get_wikipedia_external_links(article_title):
     external_links = data['parse'].get('externallinks', [])
 
     return external_links
+
+
+def is_person_dead(article_title):
+    # Define the Wikidata API endpoint for getting the article information
+    endpoint = "https://www.wikidata.org/w/api.php"
+
+    # Define the parameters to send to the API
+    params = {
+        "action": "wbgetentities",
+        "titles": article_title,
+        "sites": "enwiki",
+        "props": "claims",
+        "format": "json"
+    }
+
+    # Send the API request
+    response = requests.get(endpoint, params=params)
+
+    # Parse the JSON response
+    data = response.json()
+
+    # catching excptions in accessing dictionary keys that might now be ther
+    try:
+
+        # Get the Wikidata ID of the article
+        page_id = next(iter(data["entities"]))
+
+        # Check if the article has a "date of death" claim
+        if "P570" in data["entities"][page_id]["claims"]:
+            death_date = data["entities"][page_id]["claims"]["P570"][0]["mainsnak"]["datavalue"]["value"]["time"]
+            return death_date
+
+            # Remove the '+' character from the beginning of the date string
+            date_string = death_date[1:]
+
+            # Convert the date string to a datetime object
+            date_obj = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
+
+            return date_obj
+    except Exception:
+        return None
+    return None
