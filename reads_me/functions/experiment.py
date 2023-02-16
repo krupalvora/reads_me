@@ -1,6 +1,7 @@
 import openai
 
-from reads_me.functions.wikipedia import is_person_dead
+from reads_me.functions.wikipedia import is_person_dead, \
+    is_first_revision_in_past_month
 
 openai.api_key = "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"
 
@@ -15,9 +16,11 @@ question = "Help me write a text message to my friend Maqui that I don't want to
 #
 # print(response.choices[0].text)
 
-article_id = "East_Palsdfdfestine,_Ohio"
+article_id = "Raquel_Welch"
+article_id = "2023_Ohio_train_derailment"
+article_id = "Tahnee_Welch"
 
-print(is_person_dead(article_id))
+print(is_first_revision_in_past_month(article_id))
 
 
 # I hope you're doing well. I hope you understand but, for the moment, I kind of want to take a

@@ -10,7 +10,8 @@ from openai.error import RateLimitError
 from reads_me.constants import DEATHS
 from reads_me.functions.ai import get_buzzfeed_title, get_buzzfeed_article, get_category, get_the_onion_title, \
     get_the_onion_article, get_buzzfeed_deceased_title
-from reads_me.functions.wikipedia import get_popular, get_wikipedia_image_url, get_wikipedia_title, is_person_dead
+from reads_me.functions.wikipedia import get_popular, get_wikipedia_image_url, get_wikipedia_title, is_person_dead, \
+    is_first_revision_in_past_month
 from reads_me.models import Post
 
 
@@ -30,13 +31,19 @@ def create(request):
     article_count = 0
     article_limit = 1
     for article_id in popular_articles:
+        print(f"trying article {article_id}")
         if article_count >= article_limit:
             break
 
         # check if this is new content
         if Post.objects.filter(wikipedia_id=article_id, date_popular=popular_date).exists():
             continue
-            
+
+        # skipping new topics as ChatGPT won't know about those
+        if is_first_revision_in_past_month(article_id):
+            messages.warning(request, f"skipping '{article_id}' as it was recently created")
+            continue
+
         # getting the (more) human-readable title
         # e.g. "Raquel_Welch" -> "Raquel Welch"
         wikipedia_title = get_wikipedia_title(article_id)
@@ -63,16 +70,16 @@ def create(request):
                 if len(article_content) == 0:
                     messages.warning(request, f"No article produced for: {article_title}")
                 else:
-                    print(article_content)
-                    print("---------------------------------------------")
                     image_url = get_wikipedia_image_url(article_id)
-                    print(image_url)
-                    print("---------------------------------------------")
+
+                    # Determining the category
                     if deceased_date is not None:
                         category = DEATHS
                     else:
                         category = get_category(wikipedia_title)
                     print(category)
+
+                    # saving the post
                     post = Post(
                         date_popular=popular_date,
                         wikipedia_id=article_id,

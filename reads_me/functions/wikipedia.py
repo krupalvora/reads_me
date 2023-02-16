@@ -1,5 +1,7 @@
 import requests
 
+from datetime import datetime, timedelta
+
 # Define the API endpoint
 endpoint = "https://en.wikipedia.org/w/api.php"
 
@@ -54,7 +56,9 @@ def get_popular(date):
                     #     break
                     if article.get('project') == 'en.wikipedia':
                         title = article.get('article')
-                        if title != 'Main_Page' and title != 'Special:Search' and not title.startswith("Deaths_in_"):
+                        if title != 'Main_Page'\
+                                and not title.startswith("Special:") \
+                                and not title.startswith("Deaths_in_"):
                             views = article.get('views_ceil')
                             count += 1
                             popular_articles.append(title)
@@ -155,3 +159,53 @@ def is_person_dead(article_title):
     except Exception:
         return None
     return None
+
+
+def is_first_revision_in_past_month(article_title):
+    # Define the Wikipedia API endpoint for getting the page revisions
+    endpoint = "https://en.wikipedia.org/w/api.php"
+
+    # Define the parameters to send to the API
+    params = {
+        "action": "query",
+        "format": "json",
+        "prop": "revisions",
+        "titles": article_title,
+        "rvlimit": 1,
+        "rvprop": "timestamp",
+        "rvdir": "newer"
+    }
+
+    # Send the API request
+    response = requests.get(endpoint, params=params)
+
+    # Parse the JSON response
+    data = response.json()
+
+    # handling any missing dictionary keys
+    try:
+
+        # Get the page ID of the article
+        page_id = next(iter(data["query"]["pages"]))
+
+        # Get the timestamp when the first revision was made
+        timestamp_str = data["query"]["pages"][page_id]["revisions"][0]["timestamp"]
+
+        # Convert the timestamp string to a datetime object
+        # timestamp = datetime.fromisoformat(timestamp_str.replace("Z", "+00:00"))
+        timestamp = datetime.strptime(timestamp_str, '%Y-%m-%dT%H:%M:%SZ')
+
+        # Get the current date and time
+        now = datetime.utcnow()
+
+        # Calculate the time difference between the current date and the article creation date
+        time_diff = now - timestamp
+
+        # Check if the time difference is less than or equal to 1 month (30 days)
+        if time_diff <= timedelta(days=30):
+            return True
+        else:
+            return False
+
+    except Exception:
+        return False

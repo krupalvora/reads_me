@@ -10,7 +10,7 @@
                 </p>
                 {% if post.image_url %}
                     <img alt="{{ post.subject }}" src="{{ post.image_url }}"
-                         style="float: right; border-radius: 1em; margin: 1em; max-width: 33%">
+                         style="float: right; border-radius: 1em; margin: 1em; max-width: 33%; max-height: 30em">
                 {% endif %}
                 {{ post.content | safe }}
             </div>
