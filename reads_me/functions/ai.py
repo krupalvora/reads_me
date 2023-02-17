@@ -1,8 +1,9 @@
 import openai
 
+from django_project.settings import env
 from reads_me.constants import CATEGORIES
 
-openai.api_key = "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"
+openai.api_key = env('OPENAI_API_KEY')
 
 
 def get_buzzfeed_title(subject):

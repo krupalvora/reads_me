@@ -32,13 +32,15 @@ def create(request):
     article_limit = 1
     for article_id in popular_articles:
 
-        print(f"trying article {article_id}")
         if article_count >= article_limit:
             break
 
+        print(f"trying article {article_id}")
+
         # check if this is new content
         # if Post.objects.filter(wikipedia_id=article_id, date_popular=popular_date).exists():
-        #     continue
+        if Post.objects.filter(wikipedia_id=article_id).exists():
+            continue
 
         # skipping new topics as ChatGPT won't know about those
         if is_first_revision_in_past_month(article_id):
@@ -73,7 +75,6 @@ def create(request):
                 else:
                     image_url = get_wikipedia_image_url(article_id)
 
-                    print(f"date type: {type(deceased_date)}")
                     category = determine_category(wikipedia_title, deceased_date)
 
                     # saving the post
@@ -91,7 +92,6 @@ def create(request):
                     messages.success(request, f"New article: {article_title}")
                     article_count += 1
         except RateLimitError as rle:
-            print(f"RateLimitError: {rle}")
             messages.error(request, f"RateLimitError: {rle}")
     return redirect('home')
 
@@ -122,7 +122,8 @@ def replace_num(string):
     # check if the integer is greater than 10
     if num_len > 0:
         num = int(string[:num_len])
-        if num > 10:
+        # upper bound as after a certain point it is probably not a number of list items but a date
+        if 10 < num < 30:
             new_num = random.choice([5, 7, 10])
             return str(new_num) + string[num_len:]
     return string
@@ -137,7 +138,6 @@ def days_since(date):
 
 def determine_category(wikipedia_title, deceased_date):
     """ determining the category """
-    print(f"date type in function: {type(deceased_date)}")
     if deceased_date is not None:
         if days_since(deceased_date) > 30:
             category = ai_get_category(wikipedia_title)
