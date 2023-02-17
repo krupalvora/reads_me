@@ -2,18 +2,7 @@
 {% block content %}
     <div class="">
         {% for post in posts %}
-            <div class="">
-                <h2>{{ post.title }}</h2>
-                <p>
-                    <b>{{ post.date_popular|date:"SHORT_DATE_FORMAT" }}</b> <em>{{ post.category }}</em>
-                    <a href="https://en.wikipedia.org/wiki/{{ post.wikipedia_id }}">{{ post.subject }}</a>
-                </p>
-                {% if post.image_url %}
-                    <img alt="{{ post.subject }}" src="{{ post.image_url }}"
-                         style="float: right; border-radius: 1em; margin: 1em; max-width: 33%; max-height: 30em">
-                {% endif %}
-                {{ post.content | safe }}
-            </div>
+            {% include "reads_me/post_template.html" with post=post %}
             <hr>
         {% endfor %}
     </div>

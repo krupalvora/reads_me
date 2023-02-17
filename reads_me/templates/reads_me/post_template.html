@@ -1,0 +1,20 @@
+<div class="">
+    <h2>{{ post.title }}</h2>
+    <a href="{% url 'post-detail' post.slug %}">link</a>
+    <div>
+        <p>
+            <b>{{ post.date_popular|date:"SHORT_DATE_FORMAT" }}</b> <em>{{ post.category }}</em>
+            <a href="https://en.wikipedia.org/wiki/{{ post.wikipedia_id }}">@Wikipedia</a>
+        </p>
+
+        {% if post.image_url %}
+            <img alt="{{ post.subject }}" src="{{ post.image_url }}"
+                 style="float: right; border-radius: 1em; margin: 1em; max-width: 33%; max-height: 30em"
+            >
+        {% endif %}
+        <div style="text-align: left;">
+            {{ post.content | safe }}
+        </div>
+
+    </div>
+</div>

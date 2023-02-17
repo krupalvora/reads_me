@@ -22,7 +22,6 @@ def home(request):
     return render(request, f'{APP_NAME}/home.html', context)
 
 
-
 class PostListView(ListView):
     model = Post
     template_name = f'{APP_NAME}/post_list.html'  # <app>/<model>_<viewtype>.html
@@ -31,20 +30,18 @@ class PostListView(ListView):
     paginate_by = 5
 
 
-# posts for a specific user
-class UserPostListView(ListView):
-    model = Post
-    template_name = f'{APP_NAME}/user_posts.html'  # <app>/<model>_<viewtype>.html
-    context_object_name = 'posts'
-    paginate_by = 5
-
-    def get_queryset(self):
-        user = get_object_or_404(User, username=self.kwargs.get('username'))
-        return Post.objects.filter(author=user).order_by('-date_posted')
-
-
 class PostDetailView(DetailView):
     model = Post
+
+    def get_object(self, queryset=None):
+        post = Post.objects.filter(slug=self.kwargs.get('slug')).order_by('-timestamp').first()
+        # post = get_object_or_404(Post, slug=self.kwargs.get('slug'))
+        return post
+
+    def get_context_data(self, **kwargs):
+        context = super(PostDetailView, self).get_context_data(**kwargs)
+        context['page_title'] = self.object.title
+        return context
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):

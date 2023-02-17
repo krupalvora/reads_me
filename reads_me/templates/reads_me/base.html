@@ -15,8 +15,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 
     <link rel="stylesheet" type="text/css" href="{% static 'reads_me/main.css' %}">
-
-    <title>reads_me</title>
+    {% if page_title %}
+        <title>{{ page_title }} - READS.ME</title>
+    {% else %}
+        <title>READS.ME</title>
+    {% endif %}
 </head>
 <body>
 <header class="site-header">
