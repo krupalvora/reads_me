@@ -63,7 +63,7 @@ def get_the_onion_article(article_title):
     return response.choices[0].text
 
 
-def get_category(subject):
+def ai_get_category(subject):
     prompt = f"The categories are: {', '.join(CATEGORIES)}. \"{subject}\" is best describe by which category?"
     response = openai.Completion.create(
         model="text-davinci-003",
@@ -73,7 +73,6 @@ def get_category(subject):
     )
     return response.choices[0].text.strip()
 
-# print(get_buzzfeed_article("\"You Won't Believe What Patrick Mahomes Just Did - #1 NFL Player On The Rise!\""))
 
 def get_informative_article(subject):
     response = openai.Completion.create(

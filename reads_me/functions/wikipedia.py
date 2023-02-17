@@ -138,7 +138,7 @@ def is_person_dead(article_title):
     # Parse the JSON response
     data = response.json()
 
-    # catching excptions in accessing dictionary keys that might now be ther
+    # catching exceptions in accessing dictionary keys that might not be there
     try:
 
         # Get the Wikidata ID of the article
@@ -147,7 +147,6 @@ def is_person_dead(article_title):
         # Check if the article has a "date of death" claim
         if "P570" in data["entities"][page_id]["claims"]:
             death_date = data["entities"][page_id]["claims"]["P570"][0]["mainsnak"]["datavalue"]["value"]["time"]
-            return death_date
 
             # Remove the '+' character from the beginning of the date string
             date_string = death_date[1:]
@@ -156,8 +155,11 @@ def is_person_dead(article_title):
             date_obj = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
 
             return date_obj
+
     except Exception:
         return None
+
+    # default output
     return None
 
 

@@ -8,7 +8,7 @@ from django.utils import timezone
 from openai.error import RateLimitError
 
 from reads_me.constants import DEATHS, CATEGORIES, INTERESTING
-from reads_me.functions.ai import get_buzzfeed_title, get_buzzfeed_article, get_category, get_the_onion_title, \
+from reads_me.functions.ai import get_buzzfeed_title, get_buzzfeed_article, ai_get_category, get_the_onion_title, \
     get_the_onion_article, get_buzzfeed_deceased_title
 from reads_me.functions.wikipedia import get_popular, get_wikipedia_image_url, get_wikipedia_title, is_person_dead, \
     is_first_revision_in_past_month
@@ -31,13 +31,14 @@ def create(request):
     article_count = 0
     article_limit = 1
     for article_id in popular_articles:
+        
         print(f"trying article {article_id}")
         if article_count >= article_limit:
             break
 
         # check if this is new content
-        if Post.objects.filter(wikipedia_id=article_id, date_popular=popular_date).exists():
-            continue
+        # if Post.objects.filter(wikipedia_id=article_id, date_popular=popular_date).exists():
+        #     continue
 
         # skipping new topics as ChatGPT won't know about those
         if is_first_revision_in_past_month(article_id):
@@ -72,13 +73,8 @@ def create(request):
                 else:
                     image_url = get_wikipedia_image_url(article_id)
 
-                    # Determining the category
-                    if deceased_date is not None:
-                        category = DEATHS
-                    else:
-                        category = get_category(wikipedia_title)
-                        if category not in CATEGORIES:
-                            category = INTERESTING
+                    print(f"date type: {type(deceased_date)}")
+                    category = determine_category(wikipedia_title, deceased_date)
 
                     # saving the post
                     post = Post(
@@ -130,3 +126,27 @@ def replace_num(string):
             new_num = random.choice([5, 7, 10])
             return str(new_num) + string[num_len:]
     return string
+
+
+def days_since(date):
+    """Returns the number of days since the input date up until the current date"""
+    today = datetime.datetime.now()
+    delta = today - date
+    return delta.days
+
+
+def determine_category(wikipedia_title, deceased_date):
+    """ determining the category """
+    print(f"date type in function: {type(deceased_date)}")
+    if deceased_date is not None:
+        if days_since(deceased_date) > 30:
+            category = ai_get_category(wikipedia_title)
+        else:
+            category = DEATHS
+    else:
+        category = ai_get_category(wikipedia_title)
+
+        # "Interesting" is the default category
+        if category not in CATEGORIES:
+            category = INTERESTING
+    return category
