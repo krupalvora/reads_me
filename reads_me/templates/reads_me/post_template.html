@@ -1,10 +1,9 @@
 <div class="">
     <h2>{{ post.title }}</h2>
-    <a href="{% url 'post-detail' post.slug %}">link</a>
+
     <div>
         <p>
-            <b>{{ post.date_popular|date:"SHORT_DATE_FORMAT" }}</b> <em>{{ post.category }}</em>
-            <a href="https://en.wikipedia.org/wiki/{{ post.wikipedia_id }}">@Wikipedia</a>
+            <em>{{ post.date_popular|date:"SHORT_DATE_FORMAT" }}</em>
         </p>
 
         {% if post.image_url %}
@@ -15,6 +14,12 @@
         <div style="text-align: left;">
             {{ post.content | safe }}
         </div>
+        <p class="mt-4">
+            Link: <a href="{% url 'post-detail' post.slug %}">@post</a> |
+            Category: <a href="{% url 'category-list' post.category %}">{{ post.category }}</a> |
+            Subject: <a href="{% url 'topic-list' post.wikipedia_id %}">{{ post.subject }}</a> |
+            <a href="https://en.wikipedia.org/wiki/{{ post.wikipedia_id }}">@Wikipedia</a>
+        </p>
 
     </div>
 </div>

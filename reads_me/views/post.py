@@ -30,6 +30,22 @@ class PostListView(ListView):
     paginate_by = 5
 
 
+class PostCategoryView(ListView):
+    model = Post
+    template_name = f'{APP_NAME}/post_list.html'  # <app>/<model>_<viewtype>.html
+    context_object_name = 'posts'
+    ordering = ['-timestamp']
+    paginate_by = 5
+
+    def get_queryset(self):
+        return Post.objects.filter(category=self.kwargs.get('category')).order_by('-timestamp')
+
+
+class PostTopicView(PostCategoryView):
+    def get_queryset(self):
+        return Post.objects.filter(wikipedia_id=self.kwargs.get('wikipedia_id')).order_by('-timestamp')
+
+
 class PostDetailView(DetailView):
     model = Post
 
