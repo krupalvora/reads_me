@@ -28,17 +28,6 @@ def get_buzzfeed_deceased_title(subject):
     return response.choices[0].text
 
 
-def get_the_onion_title(subject):
-    response = openai.Completion.create(
-        model="text-davinci-003",
-        prompt=f"Write a humorous, lighthearted article title about \"{subject}\" in the style of The Onion",
-        temperature=0.6,
-        max_tokens=32,
-        # stop="\n",
-    )
-    return response.choices[0].text
-
-
 def get_buzzfeed_article(buzzfeed_title):
     response = openai.Completion.create(
         model="text-davinci-003",
@@ -48,18 +37,6 @@ def get_buzzfeed_article(buzzfeed_title):
         temperature=0.6,
         max_tokens=1024,
         stop="</ol>",
-    )
-    return response.choices[0].text
-
-
-# TODO: pitfalls: it is difficult to debug
-#  said "sing" with "in the style of BuzzFeed sing HTML markup"
-def get_the_onion_article(article_title):
-    response = openai.Completion.create(
-        model="text-davinci-003",
-        prompt=f"An humorous, lighthearted article in the style of The Onion using HTML markup:\n<h1>{article_title}</h1>\n",
-        temperature=0.6,
-        max_tokens=1024,
     )
     return response.choices[0].text
 

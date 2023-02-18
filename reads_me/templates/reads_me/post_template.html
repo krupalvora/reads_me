@@ -20,6 +20,11 @@
             Subject: <a href="{% url 'topic-list' post.wikipedia_id %}">{{ post.subject }}</a> |
             <a href="https://en.wikipedia.org/wiki/{{ post.wikipedia_id }}">@Wikipedia</a>
         </p>
+        {% if user.is_superuser %}
+        <p class="mt-4">
+            <a href="{% url 'post-deactivate' post.pk %}">DEACTIVATE</a>
+        </p>
+        {% endif %}
 
     </div>
 </div>

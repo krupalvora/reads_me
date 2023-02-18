@@ -14,6 +14,7 @@ class Post(models.Model):
     image_url = models.URLField(null=True)
     category = models.CharField(max_length=100, default=HISTORY)
     slug = models.CharField(max_length=100, default=None, null=True)
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.title

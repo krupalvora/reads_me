@@ -32,9 +32,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarToggle">
                 <div class="navbar-nav mr-auto">
-                    <a class="nav-item nav-link" href="{% url 'create' %}">Create</a>
+                    {% if user.is_superuser %}
+                        <a class="nav-item nav-link" href="{% url 'create' %}">Create</a>
+                    {% endif %}
                     {% for category in categories %}
-                    <a class="nav-item nav-link" href="{% url 'category-list' category %}">{{ category }}</a>
+                        <a class="nav-item nav-link" href="{% url 'category-list' category %}">{{ category }}</a>
                     {% endfor %}
                 </div>
                 <!-- Navbar Right Side -->

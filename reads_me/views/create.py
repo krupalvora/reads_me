@@ -8,14 +8,16 @@ from django.utils import timezone
 from openai.error import RateLimitError
 
 from reads_me.constants import DEATHS, CATEGORIES, INTERESTING
-from reads_me.functions.ai import get_buzzfeed_title, get_buzzfeed_article, ai_get_category, get_the_onion_title, \
-    get_the_onion_article, get_buzzfeed_deceased_title
+from reads_me.functions.ai import get_buzzfeed_title, get_buzzfeed_article, ai_get_category, get_buzzfeed_deceased_title
 from reads_me.functions.wikipedia import get_popular, get_wikipedia_image_url, get_wikipedia_title, is_person_dead, \
     is_first_revision_in_past_month
 from reads_me.models import Post
 
 
 def create(request):
+    if not request.user.is_superuser:
+        messages.warning(request, "No permission")
+        return redirect('home')
     popular_date = (datetime.datetime.now() - datetime.timedelta(days=1)).date()
     popular_articles = get_popular(popular_date)
     # trying day-before-yesterday if no articles retrieved
@@ -37,9 +39,13 @@ def create(request):
 
         print(f"trying article {article_id}")
 
+        # Skipping if this topic has ever been deactivated
+        if Post.objects.filter(wikipedia_id=article_id, active=False).exists():
+            continue
+
         # check if this is new content
-        # if Post.objects.filter(wikipedia_id=article_id, date_popular=popular_date).exists():
-        if Post.objects.filter(wikipedia_id=article_id).exists():
+        if Post.objects.filter(wikipedia_id=article_id, date_popular=popular_date).exists():
+        # if Post.objects.filter(wikipedia_id=article_id).exists():
             continue
 
         # skipping new topics as ChatGPT won't know about those

@@ -1,6 +1,8 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import (
     ListView,
     DetailView,
@@ -26,8 +28,10 @@ class PostListView(ListView):
     model = Post
     template_name = f'{APP_NAME}/post_list.html'  # <app>/<model>_<viewtype>.html
     context_object_name = 'posts'
-    ordering = ['-timestamp']
     paginate_by = 5
+
+    def get_queryset(self):
+        return Post.objects.filter(active=True).order_by('-timestamp')
 
 
 class PostCategoryView(ListView):
@@ -63,6 +67,7 @@ class PostDetailView(DetailView):
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'content']
+    template_name = f'{APP_NAME}/post_form.html'
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -72,6 +77,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     fields = ['title', 'content']
+    template_name = f'{APP_NAME}/post_form.html'
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -93,3 +99,12 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user == post.author:
             return True
         return False
+
+
+@login_required
+def deactivate_post(request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        post.active = False
+        post.save()
+        messages.success(request, f"Post deactivated: {post.title}")
+        return redirect('home')
