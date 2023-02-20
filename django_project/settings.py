@@ -34,13 +34,7 @@ SECRET_KEY = 'exhlfdat&vfum(-34*c2uroi(($ww(yo$9pv98=e6p^gl(-eoj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = [
-    _host.strip()
-    for _host in os.getenv('ALLOWED_HOSTS', '').split(',')
-    if _host.strip()
-]
-
-ALLOWED_HOSTS.append('164.90.146.67')
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
