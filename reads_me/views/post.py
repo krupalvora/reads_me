@@ -1,8 +1,11 @@
+from abc import ABC
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.views.generic import (
     ListView,
     DetailView,
@@ -75,20 +78,16 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView, ABC):
     model = Post
     fields = ['title', 'content']
     template_name = f'{APP_NAME}/post_form.html'
 
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-
     def test_func(self):
-        post = self.get_object()
-        if self.request.user == post.author:
-            return True
-        return False
+        return True
+
+    def get_success_url(self):
+        return reverse('post-detail', kwargs={'slug': self.object.slug})
 
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):

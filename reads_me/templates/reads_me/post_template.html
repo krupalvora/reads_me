@@ -16,7 +16,7 @@
         </h2>
         <div>
             <p>
-                <em>{{ post.date_popular|date:"SHORT_DATE_FORMAT" }}</em>
+                <em>{{ post.date_popular|date:"Y-m-d" }}</em>
             </p>
             <div style="text-align: left;">
                 <ol>
@@ -30,7 +30,8 @@
             </p>
             {% if user.is_superuser %}
                 <p class="mt-4">
-                    <a href="{% url 'post-deactivate' post.pk %}">DEACTIVATE</a>
+                    <a href="{% url 'post-deactivate' post.pk %}">DEACTIVATE</a> |
+                    <a href="{% url 'post-update' post.pk %}">Update</a> |
                 </p>
             {% endif %}
         </div>
