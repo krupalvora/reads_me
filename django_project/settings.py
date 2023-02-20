@@ -40,6 +40,8 @@ ALLOWED_HOSTS = [
     if _host.strip()
 ]
 
+ALLOWED_HOSTS.append('164.90.146.67')
+
 # Application definition
 
 INSTALLED_APPS = [
