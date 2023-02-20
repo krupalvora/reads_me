@@ -3,6 +3,7 @@ import random
 import re
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.utils import timezone
 from openai.error import RateLimitError
@@ -14,6 +15,7 @@ from reads_me.functions.wikipedia import get_popular, get_wikipedia_image_url, g
 from reads_me.models import Post
 
 
+@login_required
 def create(request):
     if not request.user.is_superuser:
         messages.warning(request, "No permission")

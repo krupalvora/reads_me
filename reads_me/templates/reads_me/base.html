@@ -17,6 +17,12 @@
             <meta property="og:image" content="{{ post.image_url }}">
             <meta property="og:image:alt" content="{{ post.subject }}"/>
         {% endif %}
+    {% else %}
+        <meta property="og:url" content="https://reads.me">
+        <meta property="og:title" content="READS.me - Entertaining lists about celebrities, sports and current events">
+        <meta property="og:site_name" content="READS.me"/>
+        <meta property="og:image" content="/static/reads_me/images/og-image.jpg">
+        <meta property="og:image:alt" content="READS.me banner"/>
     {% endif %}
 
     <!-- Fav Icon -->
@@ -35,7 +41,7 @@
     {% if page_title %}
         <title>{{ page_title }} - READS.me</title>
     {% else %}
-        <title>READS.me</title>
+        <title>READS.me - Entertaining lists about celebrities, sports and current events</title>
     {% endif %}
 </head>
 <body>
