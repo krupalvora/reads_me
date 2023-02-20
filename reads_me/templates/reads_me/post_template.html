@@ -1,7 +1,7 @@
 <div class="post container">
     <div class="row">
         {% if post.image_url %}
-            <div class="col-8">
+            <div class="col-8" style="padding-right: 1em">
         {% else %}
             <div class="col-12">
         {% endif %}
@@ -38,9 +38,7 @@
         </div>
         {% if post.image_url %}
             <div class="col-4">
-                <img alt="{{ post.subject }}" src="{{ post.image_url }}"
-                     style="float: right; border-radius: 1em; margin: 1em; max-width: 100%; max-height: 30em"
-                >
+                <img class="post-image" alt="{{ post.subject }}" src="{{ post.image_url }}">
             </div>
         {% endif %}
         </div>
