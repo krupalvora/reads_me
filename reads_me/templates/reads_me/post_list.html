@@ -1,6 +1,6 @@
 {% extends "reads_me/base.html" %}
 {% block content %}
-    <div class="">
+    <div class="posts">
         {% for post in posts %}
             {% include "reads_me/post_template.html" with post=post %}
             <hr>
