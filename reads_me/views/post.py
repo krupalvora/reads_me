@@ -42,12 +42,12 @@ class PostCategoryView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        return Post.objects.filter(category=self.kwargs.get('category')).order_by('-timestamp')
+        return Post.objects.filter(active=True, category=self.kwargs.get('category')).order_by('-timestamp')
 
 
 class PostTopicView(PostCategoryView):
     def get_queryset(self):
-        return Post.objects.filter(wikipedia_id=self.kwargs.get('wikipedia_id')).order_by('-timestamp')
+        return Post.objects.filter(active=True, wikipedia_id=self.kwargs.get('wikipedia_id')).order_by('-timestamp')
 
 
 class PostDetailView(DetailView):
@@ -61,6 +61,7 @@ class PostDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(PostDetailView, self).get_context_data(**kwargs)
         context['page_title'] = self.object.title
+        context['is_single'] = True
         return context
 
 

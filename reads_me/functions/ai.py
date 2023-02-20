@@ -14,7 +14,7 @@ def get_buzzfeed_title(subject):
         max_tokens=32,
         # stop="\n",
     )
-    return response.choices[0].text
+    return response.choices[0].text.strip()
 
 
 def get_buzzfeed_deceased_title(subject):
@@ -25,7 +25,7 @@ def get_buzzfeed_deceased_title(subject):
         max_tokens=32,
         # stop="\n",
     )
-    return response.choices[0].text
+    return response.choices[0].text.strip()
 
 
 def get_buzzfeed_article(buzzfeed_title):
@@ -38,7 +38,7 @@ def get_buzzfeed_article(buzzfeed_title):
         max_tokens=1024,
         stop="</ol>",
     )
-    return response.choices[0].text
+    return response.choices[0].text.strip()
 
 
 def ai_get_category(subject):
@@ -59,5 +59,5 @@ def get_informative_article(subject):
         temperature=0.6,
         max_tokens=1024,
     )
-    return response.choices[0].text
+    return response.choices[0].text.strip()
 
