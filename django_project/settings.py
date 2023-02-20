@@ -15,7 +15,8 @@ import os
 
 env = environ.Env(
     # set casting, default value
-    DEBUG=(bool, False)
+    DEBUG=(bool, False),
+    OPENAI_API_KEY=(str, '<your API key>')
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
