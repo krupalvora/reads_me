@@ -4,25 +4,40 @@
 <html>
 <head>
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R7J01JC02P"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-R7J01JC02P');
+    </script>
+
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="fb:app_id" content="589498437751187">
 
     {% if post %}
         <meta property="og:url" content="https://reads.me/article/{{ post.slug }}">
         <meta property="og:title" content="{{ post.title }}">
-        <meta property="og:type" content="article"/>
-        <meta property="og:site_name" content="READS.me"/>
+        <meta property="og:type" content="article">
+        <meta property="og:site_name" content="READS.me">
         {% if post.image_url %}
             <meta property="og:image" content="{{ post.image_url }}">
-            <meta property="og:image:alt" content="{{ post.subject }}"/>
+            <meta property="og:image:alt" content="{{ post.subject }}">
         {% endif %}
     {% else %}
         <meta property="og:url" content="https://reads.me">
         <meta property="og:title" content="READS.me - Entertaining lists about celebrities, sports and current events">
-        <meta property="og:site_name" content="READS.me"/>
+        <meta property="og:site_name" content="READS.me">
         <meta property="og:image" content="/static/reads_me/images/og-image.jpg">
-        <meta property="og:image:alt" content="READS.me banner"/>
+        <meta property="og:image:alt" content="READS.me banner">
     {% endif %}
 
     <!-- Fav Icon -->
