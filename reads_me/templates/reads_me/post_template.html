@@ -1,10 +1,6 @@
 <div class="post container">
-    <div class="row">
-        {% if post.image_url %}
-            <div class="col-8" style="padding-right: 1em">
-        {% else %}
-            <div class="col-12">
-        {% endif %}
+    <div class="column-container">
+        <div class="first-column">
         <h2>
             {% if is_single %}
                 {{ post.title }}
@@ -37,7 +33,7 @@
         </div>
         </div>
         {% if post.image_url %}
-            <div class="col-4">
+            <div class="second-column">
                 <img class="post-image" alt="{{ post.subject }}" src="{{ post.image_url }}">
             </div>
         {% endif %}
