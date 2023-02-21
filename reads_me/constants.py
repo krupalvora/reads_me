@@ -5,7 +5,7 @@ POLITICS = 'Politics'
 HISTORY = 'History'
 SPORTS = 'Sports'
 DEATHS = 'Deaths'
-INTERESTING = 'Interestinig'
+INTERESTING = 'Interesting'
 
 CATEGORIES = [
     CELEBRITIES,
