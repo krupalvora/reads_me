@@ -1,0 +1,78 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:400,400i,700");
+
+.post {
+    margin-top: 4em;
+}
+
+ol {
+    counter-reset: my-awesome-counter;
+    list-style: none;
+    padding-left: 40px;
+}
+
+ol li {
+    margin: 0 0 1em 0;
+    counter-increment: my-awesome-counter;
+    position: relative;
+}
+
+ol li::before {
+    content: counter(my-awesome-counter);
+    color: yellow;
+    font-size: 1.5rem;
+    font-weight: bold;
+    position: absolute;
+    --size: 32px;
+    left: calc(-1 * var(--size) - 10px);
+    line-height: var(--size);
+    width: var(--size);
+    height: var(--size);
+    top: 0;
+    transform: rotate(-10deg);
+    background: black;
+    border-radius: 50%;
+    text-align: center;
+    box-shadow: 1px 1px 0 #999;
+}
+
+.post-image {
+    border-radius: 50%;
+    margin: 1em;
+    max-width: 100%;
+    max-height: 30em;
+    border: 6px solid black;
+    box-shadow: 15px 15px 0 cyan, -15px -15px 0 magenta;
+}
+
+
+/* styles for the first column */
+.first-column {
+    flex: 1; /* take up remaining space */
+}
+
+/* styles for the second column */
+.second-column {
+    flex-basis: 33%; /* fixed width */
+}
+
+/* flexbox container for the columns */
+.column-container {
+    display: flex;
+    flex-wrap: wrap; /* allow wrapping on smaller screens */
+}
+
+
+/* media query for screens smaller than 768px */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* stack the columns */
+    }
+
+    .second-column {
+        flex-basis: auto; /* take up remaining space */
+    }
+
+    .first-column {
+        order: 2; /* change the order of the columns */
+    }
+}
