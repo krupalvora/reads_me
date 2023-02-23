@@ -1,7 +1,9 @@
+import urllib.parse
+
 from django.db import models
 from django.utils import timezone
 
-from reads_me.constants import HISTORY
+from reads_me.constants import HISTORY, BASE_URL
 
 
 class Post(models.Model):
@@ -18,5 +20,11 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_url(self):
+        return f"{BASE_URL}/article/{self.slug}"
+
+    def get_encoded_url(self):
+        return urllib.parse.quote(self.get_url(), safe='')
 
 

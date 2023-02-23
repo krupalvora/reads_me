@@ -1,41 +1,70 @@
 <div class="post container">
     <div class="column-container">
         <div class="first-column">
-        <h2>
-            {% if is_single %}
-                {{ post.title }}
-            {% else %}
-                <a href="{% url 'post-detail' post.slug %}" class="link-dark" style="text-decoration: none;">
+            <h2>
+                {% if is_single %}
                     {{ post.title }}
-                </a>
-            {% endif %}
-        </h2>
-        <div>
-            <p>
-                <em>{{ post.date_popular|date:"Y-m-d" }}</em>
-            </p>
-            <div style="text-align: left;">
-                <ol>
-                    {{ post.content | safe }}
-                </ol>
-            </div>
-            <p class="mt-4">
-                Category: <a href="{% url 'category-list' post.category %}">{{ post.category }}</a> |
-                Topic: <a href="{% url 'topic-list' post.wikipedia_id %}">{{ post.subject }}</a> |
-                <a href="https://en.wikipedia.org/wiki/{{ post.wikipedia_id }}">@Wikipedia</a>
-            </p>
-            {% if user.is_superuser %}
-                <p class="mt-4">
-                    <a href="{% url 'post-deactivate' post.pk %}">DEACTIVATE</a> |
-                    <a href="{% url 'post-update' post.pk %}">Update</a> |
+                {% else %}
+                    <a href="{% url 'post-detail' post.slug %}" class="link-dark" style="text-decoration: none;">
+                        {{ post.title }}
+                    </a>
+                {% endif %}
+            </h2>
+            <div>
+                <p>
+                    <em>{{ post.date_popular|date:"Y-m-d" }}</em>
                 </p>
-            {% endif %}
-        </div>
+                <div style="text-align: left;">
+                    <ol>
+                        {{ post.content | safe }}
+                    </ol>
+                </div>
+                <p class="mt-4">
+                    Category: <a href="{% url 'category-list' post.category %}">{{ post.category }}</a> |
+                    Topic: <a href="{% url 'topic-list' post.wikipedia_id %}">{{ post.subject }}</a> |
+                    <a href="https://en.wikipedia.org/wiki/{{ post.wikipedia_id }}">@Wikipedia</a>
+                </p>
+                {% if user.is_superuser %}
+                    <p class="mt-4">
+                        <a href="{% url 'post-deactivate' post.pk %}">DEACTIVATE</a> |
+                        <a href="{% url 'post-update' post.pk %}">Update</a> |
+                    </p>
+                {% endif %}
+
+                <div class="share-btns">
+                    Share on:
+                    <a
+                            class="share-btn twitter"
+                            href="https://twitter.com/share?url={{ post.get_url }}&text={{ post.title }}"
+                    >Twitter</a>
+
+                    <a
+                            class="share-btn facebook"
+                            href="https://www.facebook.com/sharer/sharer.php?u={{ post.get_url }}"
+                    >Facebook</a>
+
+                    <a
+                            class="share-btn reddit"
+                            href="https://reddit.com/submit?url={{ post.get_url }}&title={{ post.title }}"
+                    >Reddit</a>
+
+
+                    <a
+                            class="share-btn linkedin"
+                            href="https://www.linkedin.com/sharing/share-offsite/?url={{ post.get_encoded_url}}"
+                    >LinkedIn</a>
+
+                    https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Freads.me%2Farticle%2F10_ways_to_celebrate_mardi_gras_like_a_pro
+
+                </div>
+            </div>
         </div>
         {% if post.image_url %}
             <div class="second-column">
                 <img class="post-image" alt="{{ post.subject }}" src="{{ post.image_url }}">
             </div>
         {% endif %}
-        </div>
     </div>
+
+
+</div>

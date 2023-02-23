@@ -1,6 +1,8 @@
 APP_NAME = 'reads_me'
+BASE_URL = 'https://reads.me'
 
 CELEBRITIES = 'Celebrities'
+ENTERTAINMENT = 'Entertainment'
 POLITICS = 'Politics'
 HISTORY = 'History'
 SPORTS = 'Sports'
