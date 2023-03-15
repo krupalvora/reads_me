@@ -26,15 +26,22 @@
     {% if post %}
         <meta property="og:url" content="https://reads.me/article/{{ post.slug }}">
         <meta property="og:title" content="{{ post.title }}">
+        <meta property="og:description" content="{{ post.title }}">
         <meta property="og:type" content="article">
         <meta property="og:site_name" content="READS.me">
         {% if post.image_url %}
             <meta property="og:image" content="{{ post.image_url }}">
             <meta property="og:image:alt" content="{{ post.subject }}">
+        {% else %}
+            <meta property="og:image" content="/static/reads_me/images/og-image.jpg">
+            <meta property="og:image:alt" content="READS.me banner">
         {% endif %}
+        <meta property="article:published_time" content="{{ post.date_popular|date:"Y-m-d" }}">
+        <meta property="article:author" content="READS.me">
     {% else %}
         <meta property="og:url" content="https://reads.me">
         <meta property="og:title" content="READS.me - Entertaining lists about celebrities, sports and current events">
+        <meta property="og:description" content="Trending topics, updated daily">
         <meta property="og:site_name" content="READS.me">
         <meta property="og:image" content="/static/reads_me/images/og-image.jpg">
         <meta property="og:image:alt" content="READS.me banner">
