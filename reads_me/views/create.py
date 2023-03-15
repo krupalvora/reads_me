@@ -101,6 +101,10 @@ def create(request):
                     article_count += 1
         except RateLimitError as rle:
             messages.error(request, f"RateLimitError: {rle}")
+        posts = Post.objects.all()
+        for post in posts:
+            post.slug = create_url_slug(post.title)
+            post.save()
     return redirect('home')
 
 
