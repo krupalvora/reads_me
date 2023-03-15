@@ -13,7 +13,7 @@ class Post(models.Model):
     subject = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
     content = models.TextField()
-    image_url = models.URLField(null=True)
+    image_url = models.URLField(null=True, blank=True)
     category = models.CharField(max_length=100, default=HISTORY)
     slug = models.CharField(max_length=100, default=None, null=True)
     active = models.BooleanField(default=True)
