@@ -5,10 +5,12 @@ from reads_me.constants import CATEGORIES
 
 openai.api_key = env('OPENAI_API_KEY')
 
+# https://platform.openai.com/docs/models/gpt-4
+model_version = "text-davinci-003"
 
 def get_buzzfeed_title(subject):
     response = openai.Completion.create(
-        model="text-davinci-003",
+        model=model_version,
         prompt=f"Write an online article title about \"{subject}\" in the style of Buzzfeed",
         temperature=0.6,
         max_tokens=32,
@@ -19,7 +21,7 @@ def get_buzzfeed_title(subject):
 
 def get_buzzfeed_deceased_title(subject):
     response = openai.Completion.create(
-        model="text-davinci-003",
+        model=model_version,
         prompt=f"Write an online article title about \"{subject}\" in the past tense in the style of Buzzfeed",
         temperature=0.6,
         max_tokens=32,
@@ -30,7 +32,7 @@ def get_buzzfeed_deceased_title(subject):
 
 def get_buzzfeed_article(buzzfeed_title):
     response = openai.Completion.create(
-        model="text-davinci-003",
+        model=model_version,
         # prompt=f"An article in the style of BuzzFeed.  {buzzfeed_title}:",
         # prompt=f"An article in the style of BuzzFeed using HTML markup:\n<h1>{buzzfeed_title}</h1>\n",
         prompt=f"An listicle article in the style of BuzzFeed where each list item takes the form of \"<li><b>claim</b> - detailed explanation of claim</li>\" using HTML markup:\n\n<h1>{buzzfeed_title}</h1>\n\n<ol>",
@@ -44,7 +46,7 @@ def get_buzzfeed_article(buzzfeed_title):
 def ai_get_category(subject):
     prompt = f"The categories are: {', '.join(CATEGORIES)}. \"{subject}\" is best describe by which category?"
     response = openai.Completion.create(
-        model="text-davinci-003",
+        model=model_version,
         prompt=prompt,
         temperature=0.0,
         max_tokens=16,
